@@ -31,6 +31,7 @@ const AddModal = (props) => {
       isTitleValid: note.title.length !== 0,
       isCategoryValid: note.category.length !== 0,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [note]);
 
   return (

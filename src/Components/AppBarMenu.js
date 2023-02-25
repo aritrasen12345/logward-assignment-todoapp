@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useState } from "react";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -21,9 +22,6 @@ import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Checkbox from "@mui/joy/Checkbox";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
 
 import DrawerMenu from "./DrawerMenu";
 import AddModal from "./AddModal";
@@ -81,7 +79,6 @@ const AppBarMenu = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState([]);
-  const [deleteOpen, setDeleteOpen] = useState(false);
 
   const checkHandler = (event, id) => {
     const newNotes = [...notes];
@@ -111,18 +108,10 @@ const AppBarMenu = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const handleDeleteClickOpen = () => {
-    setDeleteOpen(true);
-  };
-
-  const handleDeleteClose = () => {
-    setDeleteOpen(false);
-  };
 
   const handleDelete = (id) => {
     const newNoteData = notes.filter((item) => item.id !== id);
     setNotes(newNoteData);
-    setDeleteOpen(false);
   };
 
   const handleDrawerToggle = () => {
@@ -208,8 +197,8 @@ const AppBarMenu = (props) => {
       >
         <Toolbar />
         {notes.map((obj) => (
-          <>
-            <Grid container key={obj.id}>
+          <Box key={obj.id}>
+            <Grid container>
               <Grid item xs={0.5}>
                 <FormControlLabel
                   value={obj.id}
@@ -238,28 +227,13 @@ const AppBarMenu = (props) => {
                 </Typography>
               </Grid>
               <Grid item xs={0.5}>
-                {/* <DeleteIcon onClick={() => handleDelete(obj.id)} /> */}
                 <IconButton aria-label="delete">
-                  <DeleteIcon onClick={handleDeleteClickOpen} />
+                  <DeleteIcon onClick={() => handleDelete(obj.id)} />
                 </IconButton>
-                <Dialog
-                  open={deleteOpen}
-                  onClose={handleDeleteClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    {"Are you sure you want to DELETE ?"}
-                  </DialogTitle>
-                  <DialogActions>
-                    <Button onClick={handleDeleteClose}>Disagree</Button>
-                    <Button onClick={() => handleDelete(obj.id)}>Agree</Button>
-                  </DialogActions>
-                </Dialog>
               </Grid>
             </Grid>
             <Divider />
-          </>
+          </Box>
         ))}
         <Button
           variant="text"
